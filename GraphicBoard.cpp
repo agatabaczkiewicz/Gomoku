@@ -4,11 +4,11 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include"Board.h"
+#include"GraphicBoard.h"
 using namespace std;
 
 
-Board::Board(sf::RenderWindow* window, int size, int width, int height)
+GraphicBoard::GraphicBoard(sf::RenderWindow* window, int size, int width, int height)
 {
 	this->window = window;
 	this->window->setFramerateLimit(10);
@@ -36,7 +36,7 @@ Board::Board(sf::RenderWindow* window, int size, int width, int height)
 	pBackgroundTexture = &textureBackground;
 	}
 
-void Board::generateCells()
+void GraphicBoard::generateCells()
 {
 	cells = std::vector<sf::RectangleShape>();
 	alreadyCliked = std::vector<int>();
@@ -58,7 +58,7 @@ void Board::generateCells()
 		y += (((float)1 / size) * height);
 	}
 }
-void Board::mouseClick(int& xClicked, int& yClicked)
+void GraphicBoard::mouseClick(int& xClicked, int& yClicked)
 {
 	int width = this->width;
 	int height = this->height;
@@ -82,18 +82,18 @@ void Board::mouseClick(int& xClicked, int& yClicked)
 		}
 	}
 }
-sf::RenderWindow* Board::getWindow()
+sf::RenderWindow* GraphicBoard::getWindow()
 {
 	return window;
 }
 
-void Board::setSize(int size)
+void GraphicBoard::setSize(int size)
 {
 	this->size = size;
 }
 
 
-void Board::renderGame()
+void GraphicBoard::renderGame()
 {
 	generateMenu();
 	window->draw(background);
@@ -102,7 +102,7 @@ void Board::renderGame()
 	}
 }
 
-void Board::generateMenu() {
+void GraphicBoard::generateMenu() {
 
 	int width = this->width;
 	int height = this->height;
@@ -126,12 +126,12 @@ void Board::generateMenu() {
 
 
 }
-void Board::renderMenu() {
+void GraphicBoard::renderMenu() {
 	window->draw(background);
 	window->draw(t1);
 	//window->draw(fromfile);
 }
-void Board::mouseMenu(int& xClicked, int& yClicked,int& view) {
+void GraphicBoard::mouseMenu(int& xClicked, int& yClicked,int& view) {
 	int width = this->width;
 	int height = this->height;
 

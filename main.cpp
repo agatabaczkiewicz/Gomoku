@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include<Windows.h>
-#include"Board.h"
+#include"GraphicBoard.h"
 using namespace std;
 int main()
 {
@@ -11,7 +11,7 @@ int main()
 	int xClicked = 999;
 	int yClicked = 999;
 	sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Gomoku Game", sf::Style::Titlebar | sf::Style::Close);
-	Board grm(&window, grid_size, windowWidth, windowHeight);
+	GraphicBoard grm(&window, grid_size, windowWidth, windowHeight);
 	grm.generateCells();
 	grm.generateMenu();
 	int view = 0; //0-menu,1-gra

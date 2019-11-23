@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Board
+class GraphicBoard
 {
 private:
 	vector<sf::RectangleShape> cells;
@@ -31,7 +31,7 @@ private:
 
 public:
 	
-	Board(sf::RenderWindow* window, int size, int width, int height);
+	GraphicBoard(sf::RenderWindow* window, int size, int width, int height);
 	sf::RenderWindow* getWindow();
 	void generateCells();
 	void setSize(int size);
