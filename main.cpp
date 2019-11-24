@@ -4,6 +4,7 @@
 #include"GraphicBoard.h"
 #include"Matrix.h"
 #include"Game.h"
+#include"FileManager.h"
 
 
 using namespace std;
@@ -19,7 +20,7 @@ int main()
 	
 	grm.generateCells();
 	grm.generateMenu();
-	
+	grm.generateRanking();
 
 	int view = 0; //0-menu,1-gra
 	while (window.isOpen())
@@ -44,10 +45,20 @@ int main()
 					grm.generateCells();
 				}
 			}
+			else if (view == 2) {
+				if (event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonPressed)
+				{
+
+					grm.mouseMenu(xClicked, yClicked, view);
+					grm.generateRanking();
+				}
+			}
 		}
 		window.clear();
 		if(view==0)
 			grm.renderMenu();
+		else if (view == 2)
+			grm.renderRanking();
 		else
 			grm.renderGame();
 		window.display();
