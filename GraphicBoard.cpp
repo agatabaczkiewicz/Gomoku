@@ -5,7 +5,9 @@
 #include <iostream>
 #include <algorithm>
 #include"GraphicBoard.h"
-#include"FileManager.h"
+#include"Matrix.h"
+#include"Game.h"
+#include"Player.h"
 using namespace std;
 
 
@@ -16,6 +18,7 @@ GraphicBoard::GraphicBoard(sf::RenderWindow* window, int size, int width, int he
 	this->width = width;
 	this->height = height;
 	this->size = size;
+	this->game = new Game();
 
 	//wczytuje pliki
 	if (!textureCell.loadFromFile("whiterect.jpg"))
@@ -31,24 +34,10 @@ GraphicBoard::GraphicBoard(sf::RenderWindow* window, int size, int width, int he
 	{
 		std::cout << "error loading the sprite";
 	}
-	if (!textureLogo.loadFromFile("logo.jpg"))
-	{
-		std::cout << "error loading the sprite";
-	}
-	if (!textureplay.loadFromFile("garj.jpg"))
-	{
-		std::cout << "error loading the sprite";
-	}
-	if (!textureRanking.loadFromFile("ranking.jpg"))
-	{
-		std::cout << "error loading the sprite";
-	}
 	pCellTexture = &textureCell;
 	pBlackCellTexture = &textureBlackCell;
-	pLogoTexture = &textureLogo;
+	
 	pBackgroundTexture = &textureBackground;
-	pPlayTexture=&textureplay;
-	pRankingTexture = &textureRanking;
 	}
 
 void GraphicBoard::generateCells()
@@ -88,12 +77,18 @@ void GraphicBoard::mouseClick(int& xClicked, int& yClicked)
 			
 		
 				cells[i].setTexture(pBlackCellTexture);
+				
+			 
 		
 			this->alreadyCliked.push_back(i);
 
 			xClicked = i % size;
 			yClicked = i / size;
 			yClicked = ((size - 1) - yClicked);
+
+			yClicked = abs(8-yClicked);
+			tabl = game->get_matrix();
+			tabl->set_field(yClicked, xClicked,1);
 		}
 	}
 }
@@ -125,27 +120,13 @@ void GraphicBoard::generateMenu() {
 	int y = (0.5) * height;
 	int x = (0.5) * width;
 
-	sf::RectangleShape graj;
-	
-	graj.setSize(sf::Vector2f(200, 100));
-	graj.setPosition((x-110), y - 25);
-	graj.setTexture(pPlayTexture);
-	playclick = graj;
-
-	
-	// -(0.5 * t2.getLocalBounds().height)));
-	sf::RectangleShape ran;
-	ran.setSize(sf::Vector2f(200, 100));
-	ran.setPosition((x - 100), y+40);
-	ran.setTexture(pRankingTexture);
-	rankingclick = ran;
-
-	sf::RectangleShape logo;
-	logo.setSize(sf::Vector2f(500, 200));
-	logo.setPosition((x - 250), y - (0.3 * height));
-	logo.setTexture(pLogoTexture);
-	gamelogo = logo;
-
+	font.loadFromFile("micross.ttf");
+	t1 = sf::Text("GRAJ!!", font);
+	t1.setFillColor(sf::Color::White);
+	t1.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	t1.setCharacterSize(60);
+	t1.setStyle(sf::Text::Bold);
+	t1.setPosition(sf::Vector2f(0.35 * width - 0.5 * t2.getLocalBounds().width, 0.5 * height - (0.5 * t2.getLocalBounds().height)));
 
 	sf::RectangleShape background;
 	background.setSize(sf::Vector2f(width, height));
@@ -157,9 +138,7 @@ void GraphicBoard::generateMenu() {
 }
 void GraphicBoard::renderMenu() {
 	window->draw(background);
-	window->draw(gamelogo);
-	window->draw(playclick);
-	window->draw(rankingclick);
+	window->draw(t1);
 	//window->draw(fromfile);
 }
 void GraphicBoard::mouseMenu(int& xClicked, int& yClicked,int& view) {
@@ -167,53 +146,10 @@ void GraphicBoard::mouseMenu(int& xClicked, int& yClicked,int& view) {
 	int height = this->height;
 
 	sf::Vector2i localPosition = sf::Mouse::getPosition(*(this->window));
-	if (localPosition.x > playclick.getPosition().x&& localPosition.x < playclick.getPosition().x + playclick.getGlobalBounds().width
-		&& localPosition.y > playclick.getPosition().y&& localPosition.y < (playclick.getPosition().y + playclick.getGlobalBounds().height)&&view!=2)
+	if (localPosition.x > t1.getPosition().x&& localPosition.x < t1.getPosition().x + t1.getGlobalBounds().width
+		&& localPosition.y > t1.getPosition().y&& localPosition.y < (t1.getPosition().y + t1.getGlobalBounds().height))
 	{
+		t1.setFillColor(sf::Color::Magenta);
 		view = 1;
 	}
-	else if (localPosition.x > rankingclick.getPosition().x&& localPosition.x < rankingclick.getPosition().x + rankingclick.getGlobalBounds().width
-		&& localPosition.y > rankingclick.getPosition().y&& localPosition.y < (rankingclick.getPosition().y + rankingclick.getGlobalBounds().height)) {
-	
-		view = 2;
-	}
-	else if (localPosition.x > t4.getPosition().x&& localPosition.x < t4.getPosition().x + t4.getGlobalBounds().width
-		&& localPosition.y > t4.getPosition().y&& localPosition.y < (t4.getPosition().y + t4.getGlobalBounds().height)&&view==2) {
-		
-		view = 0;
-	}
-
-
-}
-void GraphicBoard::generateRanking(){
-	int width = this->width;
-	int height = this->height;
-
-	string hhh;
-	FileManager www;
-	hhh = www.ShowFile();
-	//cout << hhh;
-
-	font.loadFromFile("micross.ttf");
-	t3 = sf::Text(hhh, font);
-	t3.setFillColor(sf::Color::White);
-	t3.setStyle(sf::Text::Bold | sf::Text::Underlined);
-	t3.setCharacterSize(20);
-	t3.setStyle(sf::Text::Bold);
-	t3.setPosition(sf::Vector2f(0.3 * width, 0.1*height));
-	// -(0.5 * t2.getLocalBounds().height)));
-	
-	t4 = sf::Text("MENU", font);
-	t4.setFillColor(sf::Color::White);
-	t4.setStyle(sf::Text::Bold | sf::Text::Underlined);
-	t4.setCharacterSize(20);
-	t4.setStyle(sf::Text::Bold);
-	t4.setPosition(sf::Vector2f(0.7 * width, 0.8 * height));
-
-}
-
-void GraphicBoard::renderRanking() {
-	window->draw(background);
-	window->draw(t3);
-	window->draw(t4);
 }
