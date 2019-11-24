@@ -2,7 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include<Windows.h>
-
+#include"Matrix.h"
+#include"Game.h"
 using namespace std;
 
 class GraphicBoard
@@ -14,14 +15,13 @@ private:
 	int width;
 	int height;
 	int size;
+	Game *game;
+	Matrix* tabl;
+	
 
 	sf::RectangleShape background;
-	sf::RectangleShape gamelogo;
-	sf::RectangleShape playclick;
-	sf::RectangleShape rankingclick;
-	
-	sf::Text t3;
-	sf::Text t4;
+	sf::Text t1;
+	sf::Text t2;
 	sf::Font font;
 
 	sf::Texture textureCell;
@@ -32,15 +32,8 @@ private:
 
 	sf::Texture textureBackground;
 	const sf::Texture* pBackgroundTexture;
-	sf::Texture textureLogo;
-	const sf::Texture* pLogoTexture;
-	sf::Texture textureplay;
-	const sf::Texture* pPlayTexture;
-	sf::Texture textureRanking;
-	const sf::Texture* pRankingTexture;
 
 public:
-	
 	GraphicBoard(sf::RenderWindow* window, int size, int width, int height);
 	sf::RenderWindow* getWindow();
 	void generateCells();
@@ -48,8 +41,7 @@ public:
 	void generateMenu();
 	void renderMenu();
 	void renderGame();
-	void generateRanking();
-	void renderRanking();
 	void mouseClick(int& xClicked, int& yClicked);
 	void mouseMenu(int& xClicked, int& yClicked, int& view);
 };
+
