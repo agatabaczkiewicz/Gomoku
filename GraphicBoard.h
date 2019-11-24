@@ -17,6 +17,7 @@ private:
 	int size;
 	Game *game;
 	Matrix* tabl;
+	Player* round;
 	
 
 	sf::RectangleShape background;
@@ -33,6 +34,9 @@ private:
 
 	sf::Texture textureBlackCell;
 	const sf::Texture* pBlackCellTexture;
+	
+	sf::Texture textureOrangeCell;
+	const sf::Texture* pOrangeCellTexture;
 
 	sf::Texture textureBackground;
 	const sf::Texture* pBackgroundTexture;

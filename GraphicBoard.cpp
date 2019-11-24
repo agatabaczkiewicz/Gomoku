@@ -20,6 +20,7 @@ GraphicBoard::GraphicBoard(sf::RenderWindow* window, int size, int width, int he
 	this->height = height;
 	this->size = size;
 	this->game = new Game();
+	round = game->get_player1();
 
 	//wczytuje pliki
 	if (!textureCell.loadFromFile("whiterect.jpg"))
@@ -47,10 +48,16 @@ GraphicBoard::GraphicBoard(sf::RenderWindow* window, int size, int width, int he
 	{
 		std::cout << "error loading the sprite";
 	}
+	if (!textureOrangeCell.loadFromFile("orange.jpg"))
+	{
+		std::cout << "error loading the sprite";
+	}
 
 	pCellTexture = &textureCell;
 	pBlackCellTexture = &textureBlackCell;
+	pOrangeCellTexture = &textureOrangeCell;
 	pLogoTexture = &textureLogo;
+
 
 	pBackgroundTexture = &textureBackground;
 	pPlayTexture = &textureplay;
@@ -93,7 +100,7 @@ void GraphicBoard::mouseClick(int& xClicked, int& yClicked)
 		{
 			
 		
-				cells[i].setTexture(pBlackCellTexture);
+				//cells[i].setTexture(pBlackCellTexture);
 				
 			 
 		
@@ -105,7 +112,19 @@ void GraphicBoard::mouseClick(int& xClicked, int& yClicked)
 
 			yClicked = abs(8-yClicked);
 			tabl = game->get_matrix();
-			tabl->set_field(yClicked, xClicked,1);
+			round->play(yClicked, xClicked);
+
+			if (round == game->get_player1())
+			{ 
+				cells[i].setTexture(pBlackCellTexture);
+				round = game->get_player2();
+
+			}
+			else if (round == game->get_player2())
+			{
+				cells[i].setTexture(pOrangeCellTexture);
+				round = game->get_player1();
+			}
 		}
 	}
 }

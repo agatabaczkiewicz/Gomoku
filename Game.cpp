@@ -3,8 +3,8 @@
 Game::Game()
 {
 	this->matrix = new Matrix(9);
-	this->player1 = new Player(1);
-	this->player2 = new Player(2);
+	this->player1 = new Player(1, this->matrix);
+	this->player2 = new Player(2,this->matrix);
 	matrix->print_matrix();
 }
 Matrix* Game::get_matrix()

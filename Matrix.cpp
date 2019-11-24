@@ -40,8 +40,6 @@ bool Matrix::is_0(int x,int y)
 void Matrix::set_field(int x, int y, int pawn)
 {
 	this->matrix[x][y] = pawn;
-	Matrix::print_matrix();
-	std::cout << "\n";
 
 }
 int** Matrix::get_matrix()
