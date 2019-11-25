@@ -14,6 +14,6 @@ public:
 	Matrix *get_matrix();
 	Player* get_player1();
 	Player* get_player2();
-
+	bool  checkTheEnd();
 };
 
