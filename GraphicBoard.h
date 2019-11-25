@@ -17,6 +17,7 @@ private:
 	int size;
 	Game *game;
 	Matrix* tabl;
+	Player* round;
 	
 
 	sf::RectangleShape background;
@@ -33,6 +34,9 @@ private:
 
 	sf::Texture textureBlackCell;
 	const sf::Texture* pBlackCellTexture;
+	
+	sf::Texture textureOrangeCell;
+	const sf::Texture* pOrangeCellTexture;
 
 	sf::Texture textureBackground;
 	const sf::Texture* pBackgroundTexture;
@@ -56,7 +60,9 @@ public:
 	void renderGame();
 	void generateRanking();
 	void renderRanking();
-	void mouseClick(int& xClicked, int& yClicked);
+	void mouseClick(int& xClicked, int& yClicked,int&view);
 	void mouseMenu(int& xClicked, int& yClicked, int& view);
+	void theEndWindow(string title, string message, int width, int height);
+	void theEndWindow2(string title, string message, int width, int height);
 };
 

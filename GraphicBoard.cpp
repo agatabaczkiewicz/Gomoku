@@ -20,6 +20,7 @@ GraphicBoard::GraphicBoard(sf::RenderWindow* window, int size, int width, int he
 	this->height = height;
 	this->size = size;
 	this->game = new Game();
+	round = game->get_player1();
 
 	//wczytuje pliki
 	if (!textureCell.loadFromFile("whiterect.jpg"))
@@ -47,10 +48,16 @@ GraphicBoard::GraphicBoard(sf::RenderWindow* window, int size, int width, int he
 	{
 		std::cout << "error loading the sprite";
 	}
+	if (!textureOrangeCell.loadFromFile("orange.jpg"))
+	{
+		std::cout << "error loading the sprite";
+	}
 
 	pCellTexture = &textureCell;
 	pBlackCellTexture = &textureBlackCell;
+	pOrangeCellTexture = &textureOrangeCell;
 	pLogoTexture = &textureLogo;
+
 
 	pBackgroundTexture = &textureBackground;
 	pPlayTexture = &textureplay;
@@ -79,7 +86,7 @@ void GraphicBoard::generateCells()
 		y += (((float)1 / size) * height);
 	}
 }
-void GraphicBoard::mouseClick(int& xClicked, int& yClicked)
+void GraphicBoard::mouseClick(int& xClicked, int& yClicked,int&view)
 {
 	int width = this->width;
 	int height = this->height;
@@ -91,12 +98,9 @@ void GraphicBoard::mouseClick(int& xClicked, int& yClicked)
 			&& localPosition.y > cells[i].getPosition().y&& localPosition.y < cells[i].getPosition().y + cells[i].getLocalBounds().height
 			&& !(std::find(alreadyCliked.begin(), alreadyCliked.end(), i) != alreadyCliked.end()))
 		{
-			
 		
-				cells[i].setTexture(pBlackCellTexture);
+
 				
-			 
-		
 			this->alreadyCliked.push_back(i);
 
 			xClicked = i % size;
@@ -105,7 +109,29 @@ void GraphicBoard::mouseClick(int& xClicked, int& yClicked)
 
 			yClicked = abs(8-yClicked);
 			tabl = game->get_matrix();
-			tabl->set_field(yClicked, xClicked,1);
+      
+			round->play(yClicked, xClicked);
+
+			if (round == game->get_player1())
+			{ 
+				cells[i].setTexture(pBlackCellTexture);
+				round = game->get_player2();
+
+			}
+			else if (round == game->get_player2())
+			{
+				cells[i].setTexture(pOrangeCellTexture);
+				round = game->get_player1();
+      }
+			if (game->checkTheEnd()) {
+				theEndWindow("The end has come", "\tYOU WIN!!!\nWe are so proud of you", 500, 400);
+				
+				view = 0;
+			}
+			else if (tabl->noMoreMoves()) {
+				theEndWindow("The end has come", "OH NO!\nTHERE IS NO MORE MOVES\nPRESS ENTER TO GO TO MENU", 400, 300);
+				view = 0;
+			}
 		}
 	}
 }
@@ -229,3 +255,116 @@ void GraphicBoard::renderRanking() {
 	window->draw(t3);
 	window->draw(t4);
 }
+
+void GraphicBoard::theEndWindow(string title,string message, int width, int height) 
+{
+		sf::RenderWindow popupWindow(sf::VideoMode(width, height), title, sf::Style::Titlebar | sf::Style::Close);
+		popupWindow.setFramerateLimit(10);
+
+		sf::String playerInput;
+		
+
+		// Create a text
+		sf::Font font;
+		font.loadFromFile("micross.ttf");
+		sf::Text text(message, font);
+		text.setFillColor(sf::Color::Black);
+		text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+		text.setCharacterSize(30);
+		text.setStyle(sf::Text::Bold);
+		text.setPosition(sf::Vector2f(0.5 * width - 0.5 * text.getLocalBounds().width, 0.2 * height));
+
+		font.loadFromFile("micross.ttf");
+		sf::Text text2("Give us youre nick to ranking table", font);
+		text2.setFillColor(sf::Color::Black);
+		text2.setStyle(sf::Text::Bold | sf::Text::Underlined);
+		text2.setCharacterSize(20);
+		text2.setStyle(sf::Text::Bold);
+		text2.setPosition(sf::Vector2f(0.5 * width - 0.5 * text2.getLocalBounds().width, 0.5 * height));
+
+
+		sf::Text playerText("",font);
+		playerText.setFillColor(sf::Color::Black);
+		playerText.setStyle(sf::Text::Bold | sf::Text::Underlined);
+		playerText.setCharacterSize(15);
+		playerText.setStyle(sf::Text::Bold);
+		playerText.setPosition(sf::Vector2f(0.45 * width , 0.6*height));
+		
+		// run the program as long as the window is open
+		while (popupWindow.isOpen())
+		{
+			sf::Event event;
+			//popupWindow.clear(sf::Color(255, 255, 255));
+			while (popupWindow.pollEvent(event))
+			{
+				if (event.type == sf::Event::TextEntered)
+				{
+					if (event.text.unicode < 128)
+					{
+						playerInput += (char)event.text.unicode;
+						cout << event.text.unicode << " ";
+
+						playerText.setString(playerInput);
+					}
+				}
+
+
+				if (event.type == sf::Event::Closed)
+				{
+					popupWindow.close();
+				}
+				if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
+						popupWindow.close();
+			}
+
+
+			popupWindow.clear(sf::Color(255, 255, 255));
+			popupWindow.draw(text);
+			popupWindow.draw(text2);
+			popupWindow.draw(playerText);
+			popupWindow.display();
+		}
+		string s = playerInput;
+		FileManager wwww;
+		wwww.AddToFile(s,5);
+	}
+			
+
+
+void GraphicBoard::theEndWindow2(string title, string message, int width, int height) {
+
+		sf::RenderWindow popupWindow(sf::VideoMode(width, height), title, sf::Style::Titlebar | sf::Style::Close);
+		popupWindow.setFramerateLimit(10);
+
+		// Create a text
+		sf::Font font;
+		font.loadFromFile("micross.ttf");
+		sf::Text text(message, font);
+		text.setFillColor(sf::Color::Black);
+		text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+		text.setCharacterSize(30);
+		text.setStyle(sf::Text::Bold);
+		text.setPosition(sf::Vector2f(0.5 * width - 0.5 * text.getLocalBounds().width, 0.5 * height - (0.5 * text.getLocalBounds().height)));
+
+
+		// run the program as long as the window is open
+		while (popupWindow.isOpen())
+		{
+			sf::Event event;
+			while (popupWindow.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					popupWindow.close();
+				else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
+					popupWindow.close();
+				else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
+					popupWindow.close();
+			
+			}
+			popupWindow.clear(sf::Color(255, 255, 255));
+			popupWindow.draw(text);
+			popupWindow.display();
+		}
+
+	}
+

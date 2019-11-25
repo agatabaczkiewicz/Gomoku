@@ -35,7 +35,7 @@ int main()
 				if (event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonPressed)
 				{
 
-					grm.mouseClick(xClicked, yClicked);
+					grm.mouseClick(xClicked, yClicked,view);
 				}
 			}
 			else if (view == 0) {

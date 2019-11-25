@@ -9,9 +9,9 @@ sfml-system-2.dll
 sfml-system-d-2.dll
 sfml-window-2.dll
 sfml-window-d-2.dll
-whiterect.jpg
+
 x64/
 Debug/
-Gomoku.vcxproj
-Gomoku.vcxproj.filters
-Gomoku.vcxproj.user
+Gra.vcxproj
+Gra.vcxproj.filters
+Gra.vcxproj.user

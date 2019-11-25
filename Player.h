@@ -5,9 +5,10 @@ class Player
 private:
 	int pawn;
 	Matrix* matrix;
+	int count;
 public:
 	Player();
-	Player(int pawn);
+	Player(int pawn, Matrix* matrix);
 	void play(int x, int y);
 	int get_pawn();
 
