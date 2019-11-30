@@ -90,6 +90,7 @@ void GraphicBoard::mouseClick(int& xClicked, int& yClicked,int&view)
 {
 	int width = this->width;
 	int height = this->height;
+	int mov;
 	sf::Vector2i localPosition = sf::Mouse::getPosition(*(this->window));
 	for (size_t i = 0; i < cells.size(); i++)
 	{
@@ -123,13 +124,21 @@ void GraphicBoard::mouseClick(int& xClicked, int& yClicked,int&view)
 				cells[i].setTexture(pOrangeCellTexture);
 				round = game->get_player1();
       }
+	//tabl->numberofpawns = 81;
 			if (game->checkTheEnd()) {
-				theEndWindow("The end has come", "\tYOU WIN!!!\nWe are so proud of you", 500, 400);
+				mov = round->count;
+				cout << mov;
+				game->get_player1()->count = 0;
+				game->get_player2()->count = 0;
+				tabl->numberofpawns = 0;
+				theEndWindow("The end has come", "\t\tYOU WIN!!!\nWe are so proud of you", 500, 400,mov);
 				
 				view = 0;
 			}
+		
 			else if (tabl->noMoreMoves()) {
-				theEndWindow("The end has come", "OH NO!\nTHERE IS NO MORE MOVES\nPRESS ENTER TO GO TO MENU", 400, 300);
+				tabl->numberofpawns = 0;
+				theEndWindow("The end has come", "\t\t\t\t\tOH NO!\n\tTHERE IS NO MORE MOVES\nPRESS ENTER TO GO TO MENU", 500, 400,0);
 				view = 0;
 			}
 		}
@@ -256,7 +265,7 @@ void GraphicBoard::renderRanking() {
 	window->draw(t4);
 }
 
-void GraphicBoard::theEndWindow(string title,string message, int width, int height) 
+void GraphicBoard::theEndWindow(string title,string message, int width, int height,int mov) 
 {
 		sf::RenderWindow popupWindow(sf::VideoMode(width, height), title, sf::Style::Titlebar | sf::Style::Close);
 		popupWindow.setFramerateLimit(10);
@@ -297,74 +306,52 @@ void GraphicBoard::theEndWindow(string title,string message, int width, int heig
 			//popupWindow.clear(sf::Color(255, 255, 255));
 			while (popupWindow.pollEvent(event))
 			{
-				if (event.type == sf::Event::TextEntered)
-				{
-					if (event.text.unicode < 128)
+				if (mov != 0) {
+					if (event.type == sf::Event::TextEntered)
 					{
-						playerInput += (char)event.text.unicode;
-						cout << event.text.unicode << " ";
+						if (event.text.unicode == '\b') // handle backspace explicitly
+						{
+							playerInput.erase(playerInput.getSize() - 1, 1);
+							playerText.setString(playerInput);
+						}
+						else if (event.text.unicode < 128 && event.text.unicode != '\b')
+						{
+							playerInput += (char)event.text.unicode;
+							cout << event.text.unicode << " ";
 
-						playerText.setString(playerInput);
+							playerText.setString(playerInput);
+						}
+
 					}
 				}
-
 
 				if (event.type == sf::Event::Closed)
 				{
 					popupWindow.close();
 				}
 				if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
-						popupWindow.close();
+					popupWindow.close();
 			}
 
 
 			popupWindow.clear(sf::Color(255, 255, 255));
 			popupWindow.draw(text);
-			popupWindow.draw(text2);
-			popupWindow.draw(playerText);
-			popupWindow.display();
-		}
-		string s = playerInput;
-		FileManager wwww;
-		wwww.AddToFile(s,5);
-	}
-			
-
-
-void GraphicBoard::theEndWindow2(string title, string message, int width, int height) {
-
-		sf::RenderWindow popupWindow(sf::VideoMode(width, height), title, sf::Style::Titlebar | sf::Style::Close);
-		popupWindow.setFramerateLimit(10);
-
-		// Create a text
-		sf::Font font;
-		font.loadFromFile("micross.ttf");
-		sf::Text text(message, font);
-		text.setFillColor(sf::Color::Black);
-		text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-		text.setCharacterSize(30);
-		text.setStyle(sf::Text::Bold);
-		text.setPosition(sf::Vector2f(0.5 * width - 0.5 * text.getLocalBounds().width, 0.5 * height - (0.5 * text.getLocalBounds().height)));
-
-
-		// run the program as long as the window is open
-		while (popupWindow.isOpen())
-		{
-			sf::Event event;
-			while (popupWindow.pollEvent(event))
-			{
-				if (event.type == sf::Event::Closed)
-					popupWindow.close();
-				else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
-					popupWindow.close();
-				else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
-					popupWindow.close();
-			
+			if (mov != 0) {
+				popupWindow.draw(text2);
+				popupWindow.draw(playerText);
 			}
-			popupWindow.clear(sf::Color(255, 255, 255));
-			popupWindow.draw(text);
 			popupWindow.display();
 		}
-
+		if (mov != 0) {
+			string s = playerInput;
+			FileManager wwww;
+			if (s == "")
+				s = "Anonim";
+			wwww.AddToFile(s, mov);
+		}
 	}
+			
+
+
+
 

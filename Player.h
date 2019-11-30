@@ -5,8 +5,9 @@ class Player
 private:
 	int pawn;
 	Matrix* matrix;
-	int count;
+	
 public:
+int count;
 	Player();
 	Player(int pawn, Matrix* matrix);
 	void play(int x, int y);

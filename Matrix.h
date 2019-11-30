@@ -4,9 +4,10 @@ class Matrix
 private:
 	int size;
 	int moveX, moveY;
-	int numberofpawns;
+	
 
 public:
+	int numberofpawns;
 	int** matrix;
 	Matrix();
 	Matrix(int size);

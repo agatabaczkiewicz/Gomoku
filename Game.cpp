@@ -43,6 +43,8 @@ bool Game::checkTheEnd()
 	}
 
 	if (counter >= 5) {
+		this->matrix->reset_matrix();
+		counter = 0;
 		return true;	//check if there are already 5 stones in a line
 	}
 
@@ -58,7 +60,8 @@ bool Game::checkTheEnd()
 		}
 	}
 
-	if (counter >= 5) {
+	if (counter == 5) {
+		this->matrix->reset_matrix();
 		return true;
 	}
 	/* horizontal line stones count */
@@ -77,7 +80,9 @@ bool Game::checkTheEnd()
 		}
 	}
 
-	if (counter >= 5) {
+	if (counter == 5) {
+		this->matrix->reset_matrix();
+		counter = 0;
 		return true;
 	}
 
@@ -93,7 +98,9 @@ bool Game::checkTheEnd()
 		}
 	}
 
-	if (counter >= 5) {
+	if (counter == 5) {
+		this->matrix->reset_matrix();
+		counter = 0;
 		return true;
 	}
 	/* vertical line stones count */
@@ -113,7 +120,9 @@ bool Game::checkTheEnd()
 		}
 	}
 
-	if (counter >= 5) {
+	if (counter == 5) {
+		this->matrix->reset_matrix();
+		counter = 0;
 		return true;
 	}
 
@@ -131,7 +140,9 @@ bool Game::checkTheEnd()
 		}
 	}
 
-	if (counter >= 5) {
+	if (counter == 5) {
+		this->matrix->reset_matrix();
+		counter = 0;
 		return true;
 	}
 	/* left diagonal line stones count */
@@ -152,7 +163,9 @@ bool Game::checkTheEnd()
 		}
 	}
 
-	if (counter >= 5) {
+	if (counter == 5) {
+		this->matrix->reset_matrix();
+		counter = 0;
 		return true;
 	}
 
@@ -170,7 +183,9 @@ bool Game::checkTheEnd()
 		}
 	}
 
-	if (counter >= 5) {
+	if (counter == 5) {
+		this->matrix->reset_matrix();
+		counter = 0;
 		return true;
 	}
 	return false;
