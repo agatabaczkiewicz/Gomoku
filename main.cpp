@@ -16,52 +16,58 @@ int main()
 	int xClicked = 999;
 	int yClicked = 999;
 	sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Gomoku Game", sf::Style::Titlebar | sf::Style::Close);
-	GraphicBoard grm(&window, grid_size, windowWidth, windowHeight);
-	
-	grm.generateCells();
-	grm.generateMenu();
-	grm.generateRanking();
+	try {
+		GraphicBoard grm(&window, grid_size, windowWidth, windowHeight);
+		grm.generateCells();
+		grm.generateMenu();
+		grm.generateRanking();
 
-	int view = 0; //0-menu,1-gra
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
+
+
+		int view = 0; //0-menu,1-gra
+		while (window.isOpen())
 		{
-			// "close requested" event: we close the window
-			if (event.type == sf::Event::Closed)
-				window.close();
-			if (view == 1) {
-				if (event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonPressed)
-				{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				// "close requested" event: we close the window
+				if (event.type == sf::Event::Closed)
+					window.close();
+				if (view == 1) {
+					if (event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonPressed)
+					{
 
-					grm.mouseClick(xClicked, yClicked,view);
+						grm.mouseClick(xClicked, yClicked, view);
+					}
 				}
-			}
-			else if (view == 0) {
-				if (event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonPressed)
-				{
-					grm.mouseMenu(xClicked, yClicked, view);
-					grm.generateCells();
+				else if (view == 0) {
+					if (event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonPressed)
+					{
+						grm.mouseMenu(xClicked, yClicked, view);
+						grm.generateCells();
+					}
 				}
-			}
-			else if (view == 2) {
-				if (event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonPressed)
-				{
+				else if (view == 2) {
+					if (event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonPressed)
+					{
 
-					grm.mouseMenu(xClicked, yClicked, view);
-					grm.generateRanking();
+						grm.mouseMenu(xClicked, yClicked, view);
+						grm.generateRanking();
+					}
 				}
 			}
+			window.clear();
+			if (view == 0)
+				grm.renderMenu();
+			else if (view == 2)
+				grm.renderRanking();
+			else
+				grm.renderGame();
+			window.display();
 		}
-		window.clear();
-		if(view==0)
-			grm.renderMenu();
-		else if (view == 2)
-			grm.renderRanking();
-		else
-			grm.renderGame();
-		window.display();
+	}
+	catch (const char* msg) {
+		cout << msg;
 	}
 	return 0;
 }

@@ -43,23 +43,25 @@ string FileManager::ShowFile()
 			z = line;
 			help.tovector(x, y, z);
 			toshow.push_back(help);
-			
+
 		}
 
 		file.close();
-		
+
 		int i = 0;
 		sort(toshow.begin(), toshow.end(), [](FileManager& one, FileManager& two) {return one.score < two.score; });
 		for (auto j = toshow.begin(); j < toshow.end(); j++) {
 			string _str = std::to_string(j->score);
 			//esult.append(_str);
-			result.append(_str+"\t"+j->name+"\t"+j->date+"\n");
-		//	cout << j->score << " " << j->name << " " << j->date << endl;
+			result.append(_str + "\t" + j->name + "\t" + j->date + "\n");
+			//	cout << j->score << " " << j->name << " " << j->date << endl;
 			if (i > 15)break;
 			i++;
 		}
 		//cout << result;
 	}
+	else
+		throw("CANNOT OPEN THE FILE");
 	return result;
 }
 
@@ -67,12 +69,14 @@ void FileManager::AddToFile(string name, int number_of_moves) {
 	fstream file;
 	file.open("ranking.txt", ios::app);
 	if (file.good()) {
-		file <<endl<<number_of_moves<<endl<<name<<endl;
+		file << endl << number_of_moves << endl << name << endl;
 		struct tm e;
 		time_t now = time(0);
-		localtime_s(&e,&now);
+		localtime_s(&e, &now);
 		file << e.tm_mday << "." << e.tm_mon + 1 << "." << e.tm_year + 1900;
 	}
+	else
+		throw("CANNOT ADD TO FILE");
 	file.close();
 }
 

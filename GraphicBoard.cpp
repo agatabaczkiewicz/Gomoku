@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <stdexcept>
+
 #include"GraphicBoard.h"
 #include"Matrix.h"
 #include"FileManager.h"
@@ -23,35 +25,39 @@ GraphicBoard::GraphicBoard(sf::RenderWindow* window, int size, int width, int he
 	round = game->get_player1();
 
 	//wczytuje pliki
+
 	if (!textureCell.loadFromFile("whiterect.jpg"))
 	{
-		std::cout << "error loading the sprite";
+		
+		throw("CANNOT OPEN THE FILE whiterect.jpg ");
 	}
 	if (!textureBlackCell.loadFromFile("blackcell.jpg"))
 	{
-		std::cout << "error loading the sprite";
+		throw("CANNOT OPEN THE FILE blackcell.jpg");
 	}
 	
 	if (!textureBackground.loadFromFile("background.jpg"))
 	{
-		std::cout << "error loading the sprite";
+		throw("CANNOT OPEN THE FILE background.jpg");
 	}
 	if (!textureLogo.loadFromFile("logo.jpg"))
 	{
-		std::cout << "error loading the sprite";
+		throw("CANNOT OPEN THE FILE logo.jpg");
 	}
 	if (!textureplay.loadFromFile("garj.jpg"))
 	{
-		std::cout << "error loading the sprite";
+		throw("CANNOT OPEN THE FILE garj.jpg");
 	}
 	if (!textureRanking.loadFromFile("ranking.jpg"))
 	{
-		std::cout << "error loading the sprite";
+		throw("CANNOT OPEN THE FILE ranking.jpg");
 	}
 	if (!textureOrangeCell.loadFromFile("orange.jpg"))
 	{
-		std::cout << "error loading the sprite";
+		throw("CANNOT OPEN THE FILE orange.jpg");
 	}
+
+
 
 	pCellTexture = &textureCell;
 	pBlackCellTexture = &textureBlackCell;
@@ -131,8 +137,12 @@ void GraphicBoard::mouseClick(int& xClicked, int& yClicked,int&view)
 				game->get_player1()->count = 0;
 				game->get_player2()->count = 0;
 				tabl->numberofpawns = 0;
-				theEndWindow("The end has come", "\t\tYOU WIN!!!\nWe are so proud of you", 500, 400,mov);
-				
+			//	try {
+					theEndWindow("The end has come", "\t\tYOU WIN!!!\nWe are so proud of you", 500, 400, mov);
+			//	}
+			//	catch (const char* msg) {
+			//		cout << msg;
+			//	}
 				view = 0;
 			}
 		
@@ -321,15 +331,14 @@ void GraphicBoard::theEndWindow(string title,string message, int width, int heig
 
 							playerText.setString(playerInput);
 						}
+						else if (event.text.unicode >= 128)throw"THIS SIGN IS NOT ALLOWED!";
 
 					}
 				}
 
 				if (event.type == sf::Event::Closed)
-				{
 					popupWindow.close();
-				}
-				if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
+				else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
 					popupWindow.close();
 			}
 
@@ -347,7 +356,10 @@ void GraphicBoard::theEndWindow(string title,string message, int width, int heig
 			FileManager wwww;
 			if (s == "")
 				s = "Anonim";
-			wwww.AddToFile(s, mov);
+	
+				wwww.AddToFile(s, mov);
+			
+			
 		}
 	}
 			
