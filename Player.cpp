@@ -13,7 +13,6 @@ void Player::play(int x, int y)
 	matrix->set_field(x, y, this->pawn);
 	matrix->print_matrix();
 	count++;
-	std::cout <<std::endl<< "XXX  " << count << std::endl;
 }
 int Player::get_pawn()
 {

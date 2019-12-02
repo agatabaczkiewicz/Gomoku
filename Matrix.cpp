@@ -43,7 +43,7 @@ void Matrix::set_field(int x, int y, int pawn)
 	this->matrix[x][y] = pawn;
 
 	this->numberofpawns += 1;
-	cout << this->numberofpawns << " ";
+	//cout << this->numberofpawns << " ";
 	this->moveX = x;
 	this->moveY = y;
 

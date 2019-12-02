@@ -319,7 +319,7 @@ void GraphicBoard::theEndWindow(string title,string message, int width, int heig
 				if (mov != 0) {
 					if (event.type == sf::Event::TextEntered)
 					{
-						if (event.text.unicode == '\b') // handle backspace explicitly
+						if (event.text.unicode == '\b' && playerInput!="") // handle backspace explicitly
 						{
 							playerInput.erase(playerInput.getSize() - 1, 1);
 							playerText.setString(playerInput);
